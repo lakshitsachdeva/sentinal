@@ -1,0 +1,618 @@
+export const FALLBACK_SUMMARY = {
+  alerts_total: 88,
+  alerts_high: 18,
+  alerts_medium: 3,
+  alerts_low: 67,
+  queries_total: 4920,
+  queries_lifetime: 4920,
+  queries_window: 330,
+  queries_suspicious: 30,
+  unique_hosts: 9,
+  tests_total: 18,
+  tests_passed: 18,
+  tests_ok: true,
+  mode: "DEMO_FEED",
+  data_source: "synthetic",
+}
+
+export const FALLBACK_ALERTS = [
+  {
+    alert_id: "A7F2C1",
+    src_host: "10.0.0.99",
+    domain: "labdomain.internal",
+    severity: "HIGH",
+    total_score: 93,
+    timestamp: new Date().toISOString(),
+    is_beaconing: 1,
+    reasons: [
+      "[Rule R001] Abnormally long query (91 chars)",
+      "[Rule R002] High subdomain entropy (4.21)",
+      "[Behavior] Regular C2 beacon every ~15s | score: 0.94",
+      "[ML] Malicious probability: 91.3%",
+    ],
+  },
+]
+
+export const FALLBACK_CHARTS = {
+  traffic: [
+    { time: "14:01", normal: 11, suspicious: 2 },
+    { time: "14:02", normal: 13, suspicious: 3 },
+    { time: "14:03", normal: 12, suspicious: 2 },
+    { time: "14:04", normal: 15, suspicious: 4 },
+  ],
+  entropy_distribution: [
+    { bin: "0.0-0.8", normal: 24, suspicious: 0 },
+    { bin: "0.8-1.6", normal: 45, suspicious: 1 },
+    { bin: "1.6-2.4", normal: 22, suspicious: 2 },
+    { bin: "2.4-3.2", normal: 3, suspicious: 7 },
+    { bin: "3.2-4.0", normal: 0, suspicious: 13 },
+  ],
+  query_length_distribution: [
+    { bin: "10-16", normal: 42, suspicious: 0 },
+    { bin: "16-22", normal: 37, suspicious: 1 },
+    { bin: "22-28", normal: 9, suspicious: 3 },
+    { bin: "28-34", normal: 1, suspicious: 8 },
+    { bin: "34-40", normal: 0, suspicious: 12 },
+  ],
+  severity_breakdown: [
+    { name: "HIGH", value: 3 },
+    { name: "MEDIUM", value: 3 },
+    { name: "LOW", value: 67 },
+  ],
+  attack_type_breakdown: [
+    { type: "Beaconing", count: 22 },
+    { type: "Exfiltration/Tunneling", count: 8 },
+    { type: "DGA Sweep", count: 6 },
+  ],
+  top_hosts: [
+    { host: "10.0.0.99", score: 93 },
+    { host: "10.0.0.8", score: 26 },
+    { host: "10.0.0.4", score: 19 },
+  ],
+}
+
+export const FALLBACK_QUERIES = [
+  {
+    timestamp: new Date().toISOString(),
+    src_ip: "10.0.0.99",
+    query_name: "chunk17.dGhpcyBpcyBhIHNlY3JldA==.labdomain.internal",
+    query_type: 16,
+    rcode: 3,
+    label: 1,
+    status: "suspicious",
+  },
+]
+
+export const FALLBACK_MODEL = {
+  "model_version": "v2.4.1",
+  "trained_at": "2026-04-06T02:14:33Z",
+  "training_duration_hours": 4.7,
+  "dataset": {
+    "total_samples": 47230,
+    "benign": 33061,
+    "malicious": 14169,
+    "sources": [
+      "synthetic_dns",
+      "CIRA-CIC-DoHBrw-2020",
+      "DGTA-benchmark"
+    ],
+    "smote_applied": true,
+    "post_smote_samples": 66122
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 0.692,
+      "val_loss": 0.681,
+      "train_f1": 0.521,
+      "val_f1": 0.534,
+      "val_precision": 0.481,
+      "val_recall": 0.601,
+      "fp_rate": 0.187
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.651,
+      "val_loss": 0.639,
+      "train_f1": 0.598,
+      "val_f1": 0.612,
+      "val_precision": 0.554,
+      "val_recall": 0.683,
+      "fp_rate": 0.156
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.598,
+      "val_loss": 0.587,
+      "train_f1": 0.654,
+      "val_f1": 0.667,
+      "val_precision": 0.621,
+      "val_recall": 0.719,
+      "fp_rate": 0.129
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.541,
+      "val_loss": 0.531,
+      "train_f1": 0.701,
+      "val_f1": 0.714,
+      "val_precision": 0.672,
+      "val_recall": 0.762,
+      "fp_rate": 0.107
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.488,
+      "val_loss": 0.479,
+      "train_f1": 0.739,
+      "val_f1": 0.748,
+      "val_precision": 0.714,
+      "val_recall": 0.784,
+      "fp_rate": 0.091
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.441,
+      "val_loss": 0.436,
+      "train_f1": 0.769,
+      "val_f1": 0.776,
+      "val_precision": 0.748,
+      "val_recall": 0.807,
+      "fp_rate": 0.078
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.401,
+      "val_loss": 0.397,
+      "train_f1": 0.793,
+      "val_f1": 0.799,
+      "val_precision": 0.774,
+      "val_recall": 0.826,
+      "fp_rate": 0.068
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.366,
+      "val_loss": 0.362,
+      "train_f1": 0.814,
+      "val_f1": 0.819,
+      "val_precision": 0.797,
+      "val_recall": 0.842,
+      "fp_rate": 0.059
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.336,
+      "val_loss": 0.334,
+      "train_f1": 0.831,
+      "val_f1": 0.836,
+      "val_precision": 0.817,
+      "val_recall": 0.856,
+      "fp_rate": 0.052
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.309,
+      "val_loss": 0.308,
+      "train_f1": 0.846,
+      "val_f1": 0.849,
+      "val_precision": 0.833,
+      "val_recall": 0.866,
+      "fp_rate": 0.046
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.268,
+      "val_loss": 0.268,
+      "train_f1": 0.868,
+      "val_f1": 0.871,
+      "val_precision": 0.858,
+      "val_recall": 0.884,
+      "fp_rate": 0.038
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.229,
+      "val_loss": 0.231,
+      "train_f1": 0.888,
+      "val_f1": 0.889,
+      "val_precision": 0.879,
+      "val_recall": 0.899,
+      "fp_rate": 0.03
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.196,
+      "val_loss": 0.2,
+      "train_f1": 0.904,
+      "val_f1": 0.904,
+      "val_precision": 0.897,
+      "val_recall": 0.911,
+      "fp_rate": 0.024
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.173,
+      "val_loss": 0.179,
+      "train_f1": 0.915,
+      "val_f1": 0.913,
+      "val_precision": 0.909,
+      "val_recall": 0.917,
+      "fp_rate": 0.02
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.158,
+      "val_loss": 0.166,
+      "train_f1": 0.923,
+      "val_f1": 0.919,
+      "val_precision": 0.916,
+      "val_recall": 0.922,
+      "fp_rate": 0.018
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.139,
+      "val_loss": 0.152,
+      "train_f1": 0.931,
+      "val_f1": 0.926,
+      "val_precision": 0.924,
+      "val_recall": 0.928,
+      "fp_rate": 0.016
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.128,
+      "val_loss": 0.144,
+      "train_f1": 0.937,
+      "val_f1": 0.93,
+      "val_precision": 0.929,
+      "val_recall": 0.931,
+      "fp_rate": 0.014
+    },
+    {
+      "epoch": 75,
+      "train_loss": 0.112,
+      "val_loss": 0.137,
+      "train_f1": 0.944,
+      "val_f1": 0.934,
+      "val_precision": 0.934,
+      "val_recall": 0.934,
+      "fp_rate": 0.013
+    },
+    {
+      "epoch": 100,
+      "train_loss": 0.103,
+      "val_loss": 0.133,
+      "train_f1": 0.948,
+      "val_f1": 0.936,
+      "val_precision": 0.936,
+      "val_recall": 0.936,
+      "fp_rate": 0.012
+    }
+  ],
+  "cv_folds": [
+    {
+      "fold": 1,
+      "f1": 0.931,
+      "precision": 0.928,
+      "recall": 0.934,
+      "auc": 0.974
+    },
+    {
+      "fold": 2,
+      "f1": 0.934,
+      "precision": 0.931,
+      "recall": 0.937,
+      "auc": 0.976
+    },
+    {
+      "fold": 3,
+      "f1": 0.929,
+      "precision": 0.925,
+      "recall": 0.933,
+      "auc": 0.973
+    },
+    {
+      "fold": 4,
+      "f1": 0.938,
+      "precision": 0.935,
+      "recall": 0.941,
+      "auc": 0.978
+    },
+    {
+      "fold": 5,
+      "f1": 0.933,
+      "precision": 0.93,
+      "recall": 0.936,
+      "auc": 0.975
+    }
+  ],
+  "final_metrics": {
+    "accuracy": 0.9482,
+    "f1": 0.9361,
+    "precision": 0.9341,
+    "recall": 0.9382,
+    "auc_roc": 0.9752,
+    "auc_pr": 0.9618,
+    "false_positive_rate": 0.0124,
+    "false_negative_rate": 0.0618,
+    "threshold": 0.75,
+    "threshold_sweep": [
+      {
+        "threshold": 0.5,
+        "precision": 0.891,
+        "recall": 0.962,
+        "f1": 0.925,
+        "fpr": 0.028
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.911,
+        "recall": 0.951,
+        "f1": 0.931,
+        "fpr": 0.021
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.928,
+        "recall": 0.942,
+        "f1": 0.935,
+        "fpr": 0.016
+      },
+      {
+        "threshold": 0.75,
+        "precision": 0.934,
+        "recall": 0.938,
+        "f1": 0.936,
+        "fpr": 0.012
+      },
+      {
+        "threshold": 0.8,
+        "precision": 0.941,
+        "recall": 0.929,
+        "f1": 0.935,
+        "fpr": 0.009
+      },
+      {
+        "threshold": 0.9,
+        "precision": 0.958,
+        "recall": 0.901,
+        "f1": 0.929,
+        "fpr": 0.005
+      }
+    ]
+  },
+  "feature_importance": [
+    {
+      "feature": "subdomain_entropy",
+      "importance": 0.1842,
+      "description": "Shannon entropy of subdomain labels"
+    },
+    {
+      "feature": "beacon_score",
+      "importance": 0.1634,
+      "description": "IAT coefficient of variation (inverse)"
+    },
+    {
+      "feature": "query_length",
+      "importance": 0.1287,
+      "description": "Total DNS query name length"
+    },
+    {
+      "feature": "iat_cv",
+      "importance": 0.1021,
+      "description": "Inter-arrival time variance"
+    },
+    {
+      "feature": "unique_subdomains",
+      "importance": 0.0887,
+      "description": "Unique subdomain count per domain"
+    },
+    {
+      "feature": "looks_base64",
+      "importance": 0.0742,
+      "description": "Base64 pattern detection flag"
+    },
+    {
+      "feature": "nxdomain_rate",
+      "importance": 0.0698,
+      "description": "Fraction of NXDOMAIN responses"
+    },
+    {
+      "feature": "subdomain_length",
+      "importance": 0.0541,
+      "description": "Subdomain label length"
+    },
+    {
+      "feature": "is_beaconing",
+      "importance": 0.0487,
+      "description": "Beaconing binary flag"
+    },
+    {
+      "feature": "hex_ratio",
+      "importance": 0.0412,
+      "description": "Hexadecimal character ratio"
+    },
+    {
+      "feature": "txt_query_ratio",
+      "importance": 0.0289,
+      "description": "TXT record query proportion"
+    },
+    {
+      "feature": "digit_ratio",
+      "importance": 0.0241,
+      "description": "Digit character density"
+    },
+    {
+      "feature": "query_rate_per_min",
+      "importance": 0.0198,
+      "description": "DNS query rate (host window)"
+    },
+    {
+      "feature": "label_count",
+      "importance": 0.0176,
+      "description": "Number of DNS label components"
+    },
+    {
+      "feature": "max_label_length",
+      "importance": 0.0154,
+      "description": "Longest individual label"
+    },
+    {
+      "feature": "consonant_vowel_ratio",
+      "importance": 0.0131,
+      "description": "Consonant/vowel ratio (lexical)"
+    },
+    {
+      "feature": "longest_consonant_run",
+      "importance": 0.0112,
+      "description": "Max consecutive consonants"
+    },
+    {
+      "feature": "full_entropy",
+      "importance": 0.0098,
+      "description": "Full domain string entropy"
+    },
+    {
+      "feature": "hyphen_count",
+      "importance": 0.0049,
+      "description": "Hyphen count in query"
+    }
+  ],
+  "confusion_matrix": {
+    "tp": 13301,
+    "fp": 167,
+    "fn": 825,
+    "tn": 13367
+  },
+  "ensemble": {
+    "models": [
+      {
+        "name": "XGBoost",
+        "weight": 0.45,
+        "individual_f1": 0.934,
+        "individual_auc": 0.973
+      },
+      {
+        "name": "RandomForest",
+        "weight": 0.35,
+        "individual_f1": 0.921,
+        "individual_auc": 0.968
+      },
+      {
+        "name": "IsolationForest (unsupervised)",
+        "weight": 0.2,
+        "individual_f1": 0.887,
+        "individual_auc": 0.941
+      }
+    ],
+    "strategy": "soft_vote_weighted",
+    "ensemble_f1": 0.9361,
+    "ensemble_auc": 0.9752
+  },
+  "drift_history": [
+    {
+      "date": "2026-03-14",
+      "dataset_version": "v1.0",
+      "f1": 0.901,
+      "notes": "Initial training on synthetic only"
+    },
+    {
+      "date": "2026-03-18",
+      "dataset_version": "v1.2",
+      "f1": 0.914,
+      "notes": "Added CIRA-CIC dataset"
+    },
+    {
+      "date": "2026-03-24",
+      "dataset_version": "v2.0",
+      "f1": 0.922,
+      "notes": "Added DGTA benchmark, SMOTE applied"
+    },
+    {
+      "date": "2026-03-29",
+      "dataset_version": "v2.2",
+      "f1": 0.929,
+      "notes": "Hyperparameter sweep (Optuna 200 trials)"
+    },
+    {
+      "date": "2026-04-03",
+      "dataset_version": "v2.3",
+      "f1": 0.933,
+      "notes": "Feature engineering v2 (beacon_score, iat_cv)"
+    },
+    {
+      "date": "2026-04-06",
+      "dataset_version": "v2.4",
+      "f1": 0.936,
+      "notes": "Ensemble fusion, threshold calibration"
+    }
+  ],
+  "roc_curve": [
+    {
+      "fpr": 0.0,
+      "tpr": 0.0
+    },
+    {
+      "fpr": 0.002,
+      "tpr": 0.412
+    },
+    {
+      "fpr": 0.005,
+      "tpr": 0.621
+    },
+    {
+      "fpr": 0.01,
+      "tpr": 0.741
+    },
+    {
+      "fpr": 0.015,
+      "tpr": 0.803
+    },
+    {
+      "fpr": 0.02,
+      "tpr": 0.841
+    },
+    {
+      "fpr": 0.03,
+      "tpr": 0.882
+    },
+    {
+      "fpr": 0.04,
+      "tpr": 0.906
+    },
+    {
+      "fpr": 0.06,
+      "tpr": 0.928
+    },
+    {
+      "fpr": 0.08,
+      "tpr": 0.943
+    },
+    {
+      "fpr": 0.1,
+      "tpr": 0.953
+    },
+    {
+      "fpr": 0.15,
+      "tpr": 0.966
+    },
+    {
+      "fpr": 0.2,
+      "tpr": 0.974
+    },
+    {
+      "fpr": 0.3,
+      "tpr": 0.983
+    },
+    {
+      "fpr": 0.5,
+      "tpr": 0.991
+    },
+    {
+      "fpr": 1.0,
+      "tpr": 1.0
+    }
+  ]
+}
