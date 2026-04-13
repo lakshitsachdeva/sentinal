@@ -1,0 +1,13 @@
+model_path: models/saved/dns_classifier.pkl
+ml_threshold: 0.75
+alerts_db: alerts/alerts.db
+risk_thresholds:
+  high: 70
+  medium: 40
+capture:
+  interface: eth0
+  window_seconds: 60
+alerts:
+  dedup_window_minutes: 30
+  max_per_severity: 50
+  auto_prune: true

@@ -1,0 +1,9 @@
+,query_length,subdomain_length,label_count,max_label_length,full_entropy,subdomain_entropy,digit_ratio,hyphen_count,consonant_vowel_ratio,longest_consonant_run,hex_ratio,looks_base64,is_beaconing,beacon_score,iat_cv,query_rate_per_min,unique_subdomains,nxdomain_rate,txt_query_ratio,y_true,y_pred
+count,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+mean,,,,,,,,,,,,,,,,,,,,,
+std,,,,,,,,,,,,,,,,,,,,,
+min,,,,,,,,,,,,,,,,,,,,,
+25%,,,,,,,,,,,,,,,,,,,,,
+50%,,,,,,,,,,,,,,,,,,,,,
+75%,,,,,,,,,,,,,,,,,,,,,
+max,,,,,,,,,,,,,,,,,,,,,

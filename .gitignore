@@ -1,0 +1,24 @@
+.DS_Store
+
+# Python caches/env
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Runtime/process artifacts
+.runtime/
+*.log
+
+# Local databases and generated data
+alerts/alerts.db
+data/raw/*.csv
+data/parsed/*.csv
+data/features/*.csv
+
+# React/Node artifacts
+showcase/node_modules/
+showcase/build/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

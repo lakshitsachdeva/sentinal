@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  victim:
+    image: python:3.11
+    working_dir: /app
+    command: >
+      sh -c "pip install -q dnspython loguru &&
+             python normal_traffic.py --duration 120 &
+             python attack_simulator.py --mode ${ATTACK_MODE:-full} --duration 120"
+    volumes:
+      - ./lab:/app
+      - ./data:/app/data
+    environment:
+      - ATTACK_MODE=full
+    networks:
+      - dns-lab-net
+
+  defender:
+    image: python:3.11
+    working_dir: /app
+    command: >
+      sh -c "pip install -q scapy loguru pandas &&
+             python sniffer.py --interface eth0 --output /data/raw/live.csv --duration 180"
+    volumes:
+      - ./capture:/app
+      - ./data/raw:/data/raw
+    networks:
+      - dns-lab-net
+
+  dashboard:
+    image: python:3.11
+    working_dir: /app
+    command: >
+      sh -c "pip install -q streamlit plotly pandas numpy &&
+             streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501"
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./:/app
+      - ./alerts:/app/alerts
+      - ./data:/app/data
+    networks:
+      - dns-lab-net
+
+networks:
+  dns-lab-net:
+    driver: bridge
