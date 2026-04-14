@@ -124,7 +124,7 @@ export default function LandingPage({ onNavigate }) {
       />
 
       <section style={{ position: "relative", height: "calc(100vh - 48px)", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, opacity: 0.22 }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.42 }}>
           <MatrixRain />
         </div>
 

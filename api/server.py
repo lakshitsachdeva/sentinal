@@ -309,6 +309,17 @@ def _infer_attack_type(reasons: list[str]) -> str:
     return "Other"
 
 
+def _alert_sort_key(row: dict[str, Any]) -> tuple[int, float, str]:
+    sev = str(row.get("severity", "LOW")).upper()
+    sev_rank = 3 if sev == "HIGH" else 2 if sev == "MEDIUM" else 1
+    try:
+        score = float(row.get("total_score", 0.0))
+    except Exception:
+        score = 0.0
+    ts = str(row.get("timestamp", ""))
+    return (sev_rank, score, ts)
+
+
 def get_charts() -> dict[str, Any]:
     queries = load_queries()
     alerts = load_alerts()
@@ -572,6 +583,10 @@ class Handler(BaseHTTPRequestHandler):
                 rows = load_alerts(limit=None)
                 if severity:
                     rows = [r for r in rows if str(r.get("severity", "")).upper() == severity.upper()]
+                else:
+                    # Dashboard-first ordering: always surface HIGH/MEDIUM alerts first so
+                    # analysts can immediately see critical cases, then rank by score/time.
+                    rows = sorted(rows, key=_alert_sort_key, reverse=True)
                 return self._send(HTTPStatus.OK, {"ok": True, "data": rows[:limit]})
 
             if path == "/api/queries":

@@ -108,6 +108,26 @@ function parseBinStart(bin, fallback = 0) {
   return Number.isFinite(first) ? first : fallback
 }
 
+function alertSeverityRank(alert) {
+  const sev = String(alert?.severity || "LOW").toUpperCase()
+  if (sev === "HIGH") return 3
+  if (sev === "MEDIUM") return 2
+  return 1
+}
+
+function alertDisplaySort(a, b) {
+  const bySev = alertSeverityRank(b) - alertSeverityRank(a)
+  if (bySev !== 0) return bySev
+
+  const scoreA = Number(a?.total_score || 0)
+  const scoreB = Number(b?.total_score || 0)
+  if (scoreB !== scoreA) return scoreB - scoreA
+
+  const ta = new Date(a?.timestamp || 0).getTime()
+  const tb = new Date(b?.timestamp || 0).getTime()
+  return (Number.isFinite(tb) ? tb : 0) - (Number.isFinite(ta) ? ta : 0)
+}
+
 export default function DashboardPage({ onNavigate }) {
   const summaryQ = useSummary()
   const { data: chartsData, error: chartsError, loading: chartsLoading, lastOk: chartsLastOk, refresh: chartsRefresh } = useCharts()
@@ -221,6 +241,7 @@ export default function DashboardPage({ onNavigate }) {
   const threatLevel =
     summary?.alerts_high > 0 ? "HIGH" : summary?.alerts_medium > 0 ? "MEDIUM" : summary?.alerts_low > 0 ? "LOW" : "NONE"
   const anyError = summaryQ.error || chartsError || alertsQ.error || queriesQ.error
+  const displayAlerts = useMemo(() => [...(liveAlerts || [])].sort(alertDisplaySort), [liveAlerts])
 
   return (
     <div style={{ color: T.txt, background: T.bg, minHeight: "100vh" }}>
@@ -579,8 +600,8 @@ export default function DashboardPage({ onNavigate }) {
             </div>
           </div>
 
-          {liveAlerts.length === 0 ? <div style={{ color: T.muted, fontSize: 12 }}>No alerts yet</div> : null}
-          {liveAlerts.map((a, idx) => (
+          {displayAlerts.length === 0 ? <div style={{ color: T.muted, fontSize: 12 }}>No alerts yet</div> : null}
+          {displayAlerts.map((a, idx) => (
             <AlertCard
               key={a.alert_id || `${a.src_host}-${idx}`}
               alert={a}

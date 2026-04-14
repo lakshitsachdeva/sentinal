@@ -21,12 +21,16 @@ export default function ThreatNetwork({ alerts = [], queries = [] }) {
     resize()
     window.addEventListener("resize", resize)
 
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false
     const nodeMap = new Map()
+    const edgeSet = new Set()
     const edges = []
+    const MAX_NODES = 28
 
     const addNode = (id, type, suspicious) => {
       if (!id) return
       if (!nodeMap.has(id)) {
+        if (nodeMap.size >= MAX_NODES) return
         nodeMap.set(id, {
           id,
           type,
@@ -42,28 +46,31 @@ export default function ThreatNetwork({ alerts = [], queries = [] }) {
       }
     }
 
-    for (const a of alerts.slice(0, 20)) {
+    const addEdge = (from, to, suspicious) => {
+      if (!from || !to) return
+      const k = `${from}__${to}`
+      if (edgeSet.has(k)) return
+      edgeSet.add(k)
+      edges.push({ from, to, suspicious: Boolean(suspicious) })
+    }
+
+    for (const a of alerts.slice(0, 14)) {
       addNode(a.src_host, "host", true)
       addNode(a.domain, "domain", String(a.severity || "").toUpperCase() === "HIGH")
-      edges.push({
-        from: a.src_host,
-        to: a.domain,
-        suspicious: String(a.severity || "").toUpperCase() === "HIGH",
-      })
+      addEdge(a.src_host, a.domain, String(a.severity || "").toUpperCase() === "HIGH")
     }
-    for (const q of queries.slice(0, 30)) {
+    for (const q of queries.slice(0, 20)) {
       if (!q.src_ip || !q.query_name) continue
       const dom = String(q.query_name).split(".").slice(-2).join(".")
       addNode(q.src_ip, "host", q.status === "suspicious")
       addNode(dom, "domain", false)
-      if (!edges.find((e) => e.from === q.src_ip && e.to === dom)) {
-        edges.push({ from: q.src_ip, to: dom, suspicious: q.status === "suspicious" })
-      }
+      addEdge(q.src_ip, dom, q.status === "suspicious")
     }
 
     const nodes = Array.from(nodeMap.values())
     let tick = 0
     let animId = null
+    let lastFrame = 0
 
     const simulate = () => {
       for (let i = 0; i < nodes.length; i += 1) {
@@ -137,19 +144,38 @@ export default function ThreatNetwork({ alerts = [], queries = [] }) {
         ctx.fill()
 
         ctx.fillStyle = n.suspicious ? T.r : T.muted
-        ctx.font = "9px 'Share Tech Mono', monospace"
-        ctx.textAlign = "center"
-        const label = n.id.length > 16 ? `${n.id.slice(0, 14)}…` : n.id
-        ctx.fillText(label, n.x, n.y + n.radius + 11)
+        // Drawing labels every frame is expensive; update text at half rate.
+        if (tick % 2 === 0) {
+          ctx.font = "9px 'Share Tech Mono', monospace"
+          ctx.textAlign = "center"
+          const label = n.id.length > 16 ? `${n.id.slice(0, 14)}…` : n.id
+          ctx.fillText(label, n.x, n.y + n.radius + 11)
+        }
       }
     }
 
-    const loop = () => {
+    if (prefersReducedMotion) {
+      draw()
+      return () => {
+        window.removeEventListener("resize", resize)
+      }
+    }
+
+    const loop = (ts) => {
+      if (document.hidden) {
+        animId = requestAnimationFrame(loop)
+        return
+      }
+      if (ts - lastFrame < 33) {
+        animId = requestAnimationFrame(loop)
+        return
+      }
+      lastFrame = ts
       simulate()
       draw()
       animId = requestAnimationFrame(loop)
     }
-    loop()
+    animId = requestAnimationFrame(loop)
 
     return () => {
       if (animId) cancelAnimationFrame(animId)
